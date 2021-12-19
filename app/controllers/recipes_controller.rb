@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   def index
-    @recipe = Recipe.all
+    @recipes = Recipe.all.order(id: "DESC")
   end
 
   def show
@@ -13,10 +13,13 @@ class RecipesController < ApplicationController
   end
   
   def create
-    @recipe = Recipe.new(recipe_params)
+    @recipe = current_user.recipes.build(recipe_params)
     @recipe.user_id = current_user.id
-    @recipe.save
-    redirect_to recipe_path(@recipe)
+    if @recipe.save
+    redirect_to recipe_path(@recipe), notice: '投稿に成功しました'
+    else
+      render :new
+    end
   end
 
   def edit
@@ -28,8 +31,11 @@ class RecipesController < ApplicationController
   
   def update
     @recipe = Recipe.find(params[:id])
-    @recipe.update(recipe_params)
-    redirect_to recipe_path(@recipe)
+    if @recipe.update(recipe_params)
+      redirect_to recipe_path(@recipe), notice: '更新に成功しました'
+    else
+      render :edit
+    end
   end
   
   

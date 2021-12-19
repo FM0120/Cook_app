@@ -17,6 +17,9 @@
 @import "bulma";
 
 .notification:not(:last-child){
+	// notificationは画面上部に出てくる更新時に出るポップアップ通知 https://johobase.com/bulma-notification/
+	// bulma-railsの追加機能で追加できる
+	// https://www.ameamelog.com/not-last-first/
 	margin-bottom: 0;
 }
 
